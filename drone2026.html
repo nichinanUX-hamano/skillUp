@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最新ドローン製品・市場動向レポート 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc; 
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .interactive-card {
+            transition: all 0.3s ease;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-tab {
+            background-color: #0d9488; 
+            color: white;
+            border-color: #0d9488;
+        }
+        .inactive-tab {
+            background-color: white;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+    </style>
+    <!-- Chosen Palette: Slate & Teal (Professional & Technological) -->
+    <!-- Application Structure Plan: The SPA is structured into three main thematic sections: 1. Market Overview (Dashboard for macro trends), 2. Technological Innovations (Interactive tabs for drill-down into specific product features like AI, Battery, etc.), 3. Industry Applications (Interactive doughnut chart linked to use-case details). This structure moves the user logically from the "big picture" market growth, down to "how" the products are evolving, and finally to "where" they are being used, optimizing understanding without requiring linear reading of a traditional report. -->
+    <!-- Visualization & Content Choices: 
+         1. Market Growth -> Goal: Show trend/change over time -> Line Chart (Chart.js) -> Hover for exact values -> Clear visual proof of industry expansion.
+         2. Tech Trends -> Goal: Organize detailed qualitative insights -> Interactive Tabbed Cards (HTML/JS) -> Click to reveal details -> Prevents text overload and allows user-driven exploration.
+         3. Industry Use Cases -> Goal: Show proportions & details -> Doughnut Chart (Chart.js) + Dynamic Text Block -> Click chart segments to update text -> Connects quantitative data directly to qualitative explanations. 
+         Library: Chart.js (Canvas). CONFIRMING NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 tracking-tight mb-4">最新ドローン製品・市場動向レポート</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                本ダッシュボードは、近年急速な進化を遂げているドローン（無人航空機）市場の最新動向、技術トレンド、および産業別の活用事例をインタラクティブに解説します。コンシューマー向けから高度な産業用モデルまで、製品開発の「現在」と「未来」を俯瞰することができます。
+            </p>
+        </header>
+
+        <section class="mb-16 bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-l-4 border-teal-600 pl-3">1. 市場規模と成長推移（国内ビジネス市場）</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    本セクションでは、ドローンビジネス市場全体の成長トレンドを示します。レベル4飛行（有人地帯での目視外飛行）の解禁や、各産業での社会実装のフェーズ移行により、市場はCAGR（年平均成長率）20%以上の高水準で拡大を続けています。グラフにカーソルを合わせると各年度の詳細数値を確認できます。
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-sm font-semibold text-slate-500 mb-1">2026年度 予測市場規模</div>
+                        <div class="text-3xl font-bold text-teal-700">1兆2,400<span class="text-lg text-slate-600 font-normal"> 億円</span></div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-sm font-semibold text-slate-500 mb-1">主要牽引セクター</div>
+                        <div class="text-xl font-bold text-slate-700">点検・物流・インフラ</div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-3">
+                    <div class="chart-container w-full max-w-4xl mx-auto">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-l-4 border-teal-600 pl-3">2. 主要な技術・製品トレンド</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    機体性能およびソフトウェア領域における最新の製品トレンドを解説します。左側のカテゴリをクリックすると、右側のパネルに詳細な技術動向と具体例が表示されます。ハードウェアの進化だけでなく、AIを活用した「自律化」が現在の最大の焦点となっています。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-4 flex flex-col space-y-3" id="trend-buttons-container">
+                    <button data-target="ai" class="trend-btn active-tab text-left px-5 py-4 rounded-xl font-semibold border transition-colors shadow-sm focus:outline-none">
+                        <span class="text-xl mr-2">🤖</span> AI・完全自律飛行技術
+                    </button>
+                    <button data-target="battery" class="trend-btn inactive-tab text-left px-5 py-4 rounded-xl font-semibold border transition-colors shadow-sm focus:outline-none">
+                        <span class="text-xl mr-2">🔋</span> バッテリー・長時間駆動
+                    </button>
+                    <button data-target="payload" class="trend-btn inactive-tab text-left px-5 py-4 rounded-xl font-semibold border transition-colors shadow-sm focus:outline-none">
+                        <span class="text-xl mr-2">📷</span> ペイロード・センシング
+                    </button>
+                    <button data-target="safety" class="trend-btn inactive-tab text-left px-5 py-4 rounded-xl font-semibold border transition-colors shadow-sm focus:outline-none">
+                        <span class="text-xl mr-2">🛡️</span> 安全基準・法規制対応
+                    </button>
+                </div>
+
+                <div class="md:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-100 p-8 h-full flex flex-col justify-center transition-opacity duration-300" id="trend-content-panel">
+                    <div class="inline-block bg-teal-100 text-teal-800 text-sm px-3 py-1 rounded-full font-semibold mb-4 w-max" id="trend-tag">注目トレンド</div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4" id="trend-title">AIによる高度な障害物回避と自律航行</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6" id="trend-desc">
+                        最新の機体には、全方位のビジョンセンサーと強力なAIチップが搭載されています。これにより、GPSが届かない非GNSS環境（橋梁の下や屋内など）でも、リアルタイムで3Dマップを構築しながら障害物を自動で回避し、目的地まで自律的に飛行することが可能になりました。操縦者のスキルへの依存度が劇的に低下しています。
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-700 block mb-2">実装の具体例:</strong>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1" id="trend-examples">
+                            <li>全方向障害物検知システム（APAS等）の標準搭載</li>
+                            <li>被写体の自動追尾機能（アクティブトラック）の高度化</li>
+                            <li>自動巡回ルートのAI生成と最適化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-10 bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-l-4 border-teal-600 pl-3">3. 産業別活用（ユースケース）の広がり</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    ドローンがどのような産業で製品として導入されているかを示す構成比です。円グラフの各セグメントをクリックするか、下のボタンを選択することで、その分野特有の製品動向と活用事例を確認できます。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div>
+                    <div class="chart-container w-full max-w-md mx-auto">
+                        <canvas id="useCaseChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col h-full justify-center">
+                    <div class="flex flex-wrap gap-2 mb-6" id="usecase-filters">
+                        <button data-sector="inspection" class="usecase-btn px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium focus:outline-none transition-colors">インフラ点検</button>
+                        <button data-sector="agriculture" class="usecase-btn px-4 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-sm font-medium focus:outline-none transition-colors">農業・林業</button>
+                        <button data-sector="logistics" class="usecase-btn px-4 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-sm font-medium focus:outline-none transition-colors">物流・配送</button>
+                        <button data-sector="survey" class="usecase-btn px-4 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-sm font-medium focus:outline-none transition-colors">測量・土木</button>
+                    </div>
+
+                    <div id="usecase-details" class="bg-slate-50 p-6 rounded-xl border border-slate-200 min-h-[250px]">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3" id="uc-icon">🏗️</span>
+                            <h3 class="text-xl font-bold text-slate-800" id="uc-title">インフラ点検・維持管理</h3>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed mb-4" id="uc-desc">
+                            橋梁、鉄塔、外壁、プラントなどの老朽化対策として最も普及が進んでいる分野です。高解像度カメラと赤外線（サーマル）カメラを同時搭載した機体が主流であり、AIによるひび割れの自動検知ソフトウェアとセットで導入されるケースが増加しています。
+                        </p>
+                        <div class="text-sm text-slate-500 bg-white p-3 rounded border border-slate-100" id="uc-spec">
+                            <strong>求められる製品要件：</strong> 上向きジンバル、RTK（高精度測位）、防塵防滴（IP等級）、ズーム性能
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm">
+        <p>2026 デバイストレンドモニタリング｜ドローン</p>
+    </footer>
+
+    <script>
+        const marketData = {
+            labels: ['2020', '2021', '2022', '2023', '2024', '2025(見込)', '2026(予測)', '2027(予測)'],
+            datasets: [{
+                label: '国内ドローンビジネス市場規模 (億円)',
+                data: [1841, 2308, 3086, 3828, 4900, 6500, 8800, 12400],
+                borderColor: '#0d9488',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#0d9488',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        const trendContent = {
+            ai: {
+                tag: "自律化の波",
+                title: "AIによる高度な障害物回避と自律航行",
+                desc: "最新の機体には、全方位のビジョンセンサーと強力なAIチップが搭載されています。これにより、GPSが届かない非GNSS環境（橋梁の下や屋内など）でも、リアルタイムで3Dマップを構築しながら障害物を自動で回避し、目的地まで自律的に飛行することが可能になりました。操縦者のスキルへの依存度が劇的に低下しています。",
+                examples: ["全方向障害物検知システム（APAS等）の標準搭載", "被写体の自動追尾機能（アクティブトラック）の高度化", "自動巡回ルートのAI生成と最適化"]
+            },
+            battery: {
+                tag: "ハードウェア進化",
+                title: "全固体電池とハイブリッド化による長時間駆動",
+                desc: "リチウムポリマー(LiPo)バッテリーの性能向上が限界に近づく中、次世代バッテリーの搭載競争が始まっています。エネルギー密度が高い全固体電池の実験的搭載や、エンジンとモーターを組み合わせたハイブリッド型ドローンの商用化により、これまでの「飛行時間30分」の壁を越え、2時間以上の連続飛行が可能なモデルが産業用で登場しています。",
+                examples: ["シリコン負極採用によるバッテリー軽量化", "ハイブリッドジェネレーター搭載モデルの普及", "充電ステーション（ドローンポート）による自動充電運用"]
+            },
+            payload: {
+                tag: "センシング技術",
+                title: "モジュール化とマルチセンサー搭載の標準化",
+                desc: "カメラ機能は単なる高画質化（4K/8K）から、目的別の専用センサーへとシフトしています。1つのジンバルに可視光カメラ、赤外線（サーマル）カメラ、レーザー測距儀（LiDAR）などを複数統合したマルチセンサーカメラが主流となり、一度の飛行で多様なデータを取得可能になりました。用途に応じてペイロードをワンタッチで交換できるモジュール設計がトレンドです。",
+                examples: ["小型軽量化されたLiDARスキャナーの低価格化", "メカニカルシャッター搭載による測量精度向上", "暗視（ナイトビジョン）性能の飛躍的向上"]
+            },
+            safety: {
+                tag: "コンプライアンス",
+                title: "レベル4飛行を見据えた安全機能とRemote ID",
+                desc: "市街地での目視外飛行（レベル4）の解禁に伴い、製品には極めて高い安全性が求められています。機体の位置情報や登録情報を電波で発信する「リモートID」の搭載が義務化されたほか、万が一のシステム異常時に作動する緊急用パラシュートシステムや、モーターの一部が停止しても姿勢を制御して安全に着陸するフェールセーフ機能が製品価値を左右しています。",
+                examples: ["リモートID発信機の内蔵化（後付け不要）", "通信の冗長化（デュアルLTE通信モジュール等）", "データセキュリティ（暗号化通信）の強化"]
+            }
+        };
+
+        const useCaseData = {
+            inspection: {
+                icon: "🏗️",
+                title: "インフラ点検・維持管理",
+                desc: "橋梁、鉄塔、外壁、プラントなどの老朽化対策として最も普及が進んでいる分野です。高解像度カメラと赤外線（サーマル）カメラを同時搭載した機体が主流であり、AIによるひび割れの自動検知ソフトウェアとセットで導入されるケースが増加しています。",
+                spec: "求められる製品要件： 上向きジンバル、RTK（高精度測位）、防塵防滴（IP等級）、ズーム性能"
+            },
+            agriculture: {
+                icon: "🌾",
+                title: "農業・林業（農薬散布・生育管理）",
+                desc: "大型ドローンによる農薬・肥料の自動散布が定着し、農業従事者の高齢化対策として不可欠なツールとなっています。最新動向としては、マルチスペクトルカメラで農作物の生育状況（NDVI指数など）を空撮分析し、発育不良の箇所にだけピンポイントで農薬を散布する「可変施肥」技術に対応した製品が注目されています。",
+                spec: "求められる製品要件： 大容量タンク（40L等）、強力なダウンドラフト、防腐食設計、液滴サイズ制御"
+            },
+            logistics: {
+                icon: "📦",
+                title: "物流・配送・医療品輸送",
+                desc: "過疎地や離島への日用品配送、緊急時の医療物資輸送において実証実験から社会実装への移行が進んでいます。強風や雨天時でも安定して飛行できる耐候性と、数十キロの荷物を搭載して長距離を自律飛行する性能が製品開発の鍵となっています。ウィンチ機能で着陸せずに荷物を下ろす機構も増えています。",
+                spec: "求められる製品要件： 高い耐風性能、大容量バッテリー/ハイブリッド、荷物の自動切り離し機構"
+            },
+            survey: {
+                icon: "🗺️",
+                title: "測量・土木（i-Construction）",
+                desc: "建設現場における3D地形モデルの作成に利用されます。以前は地上に標定点（GCP）を多数設置する必要がありましたが、機体自体にRTK（リアルタイムキネマティック）モジュールを搭載することで、数センチ単位の測位精度を単独で実現する製品が普及し、作業時間を大幅に短縮しています。",
+                spec: "求められる製品要件： RTKモジュール内蔵、メカニカルシャッター、LiDAR搭載能力、長時間のホバリング安定性"
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const ctxMarket = document.getElementById('marketChart').getContext('2d');
+            new Chart(ctxMarket, {
+                type: 'line',
+                data: marketData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { family: "'Noto Sans JP', sans-serif" } } },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { family: "'Noto Sans JP', sans-serif", size: 14 },
+                            bodyFont: { family: "'Noto Sans JP', sans-serif", size: 14 },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString() + ' 億円';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: "'Noto Sans JP', sans-serif" } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: "'Noto Sans JP', sans-serif" } }
+                        }
+                    }
+                }
+            });
+
+            const ctxUseCase = document.getElementById('useCaseChart').getContext('2d');
+            const useCaseChartInstance = new Chart(ctxUseCase, {
+                type: 'doughnut',
+                data: {
+                    labels: ['点検', '農業', '物流', '測量', 'その他(空撮等)'],
+                    datasets: [{
+                        data: [35, 25, 15, 15, 10],
+                        backgroundColor: [
+                            '#0d9488', 
+                            '#2dd4bf', 
+                            '#0f766e', 
+                            '#5eead4', 
+                            '#cbd5e1'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'right', labels: { font: { family: "'Noto Sans JP', sans-serif" }, boxWidth: 15 } },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { family: "'Noto Sans JP', sans-serif" },
+                            bodyFont: { family: "'Noto Sans JP', sans-serif", size: 14 },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const mapIndexToKey = ['inspection', 'agriculture', 'logistics', 'survey', 'inspection'];
+                            updateUseCaseDetails(mapIndexToKey[index]);
+                        }
+                    }
+                }
+            });
+
+            const trendButtons = document.querySelectorAll('.trend-btn');
+            const pTag = document.getElementById('trend-tag');
+            const pTitle = document.getElementById('trend-title');
+            const pDesc = document.getElementById('trend-desc');
+            const pExamples = document.getElementById('trend-examples');
+            const panel = document.getElementById('trend-content-panel');
+
+            trendButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    trendButtons.forEach(btn => {
+                        btn.classList.remove('active-tab');
+                        btn.classList.add('inactive-tab');
+                    });
+                    
+                    const targetBtn = e.currentTarget;
+                    targetBtn.classList.remove('inactive-tab');
+                    targetBtn.classList.add('active-tab');
+
+                    const key = targetBtn.getAttribute('data-target');
+                    const data = trendContent[key];
+
+                    panel.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        pTag.textContent = data.tag;
+                        pTitle.textContent = data.title;
+                        pDesc.textContent = data.desc;
+                        pExamples.innerHTML = data.examples.map(ex => `<li>${ex}</li>`).join('');
+                        panel.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            const ucButtons = document.querySelectorAll('.usecase-btn');
+            const ucIcon = document.getElementById('uc-icon');
+            const ucTitle = document.getElementById('uc-title');
+            const ucDesc = document.getElementById('uc-desc');
+            const ucSpec = document.getElementById('uc-spec');
+            const ucDetails = document.getElementById('usecase-details');
+
+            function updateUseCaseDetails(sectorKey) {
+                const data = useCaseData[sectorKey];
+                
+                ucButtons.forEach(btn => {
+                    if(btn.getAttribute('data-sector') === sectorKey) {
+                        btn.classList.remove('bg-slate-200', 'text-slate-700');
+                        btn.classList.add('bg-teal-600', 'text-white');
+                    } else {
+                        btn.classList.add('bg-slate-200', 'text-slate-700');
+                        btn.classList.remove('bg-teal-600', 'text-white');
+                    }
+                });
+
+                ucDetails.style.opacity = 0.5;
+                setTimeout(() => {
+                    ucIcon.textContent = data.icon;
+                    ucTitle.textContent = data.title;
+                    ucDesc.textContent = data.desc;
+                    ucSpec.innerHTML = `<strong>求められる製品要件：</strong> ${data.spec.replace('求められる製品要件： ', '')}`;
+                    ucDetails.style.opacity = 1;
+                }, 150);
+            }
+
+            ucButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const sector = e.currentTarget.getAttribute('data-sector');
+                    updateUseCaseDetails(sector);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年 XR市場トレンド インタラクティブレポート</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .category-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-12">
+
+    <!-- Chosen Palette: Slate & Blue Tone (Background: Slate-50 #F8FAFC, Cards: White, Primary: Blue-500 #3B82F6, Text: Slate-800 #1E293B) -->
+    <!-- Application Structure Plan: A single-page dashboard designed for non-linear exploration. It starts with an executive summary, followed by a quantitative overview (Doughnut Chart) to immediately show the market scale differences. Below that, an interactive "Category Deep Dive" section allows users to click through the 6 domains to read qualitative insights without scrolling through a massive wall of text. Finally, a section on "Technical Singularities" summarizes the drivers. This structure supports "overview first, zoom and filter, then details-on-demand." -->
+    <!-- Visualization & Content Choices: 
+         1. Market Overview -> Goal: Compare -> Doughnut Chart (Chart.js). Justification: Effectively shows relative market sizes of the 5 quantified categories. Interactive clicking filters the details below.
+         2. Category Details -> Goal: Organize & Inform -> Interactive Grid/Tabs (Vanilla JS). Justification: Keeps the UI clean; users only read about the sector they are interested in.
+         3. Technical Drivers -> Goal: Inform -> Card Layout. Justification: Highlights the 3 core pillars clearly.
+         All implementations use Chart.js, HTML/Tailwind, and Vanilla JS. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="font-bold text-xl text-blue-600 tracking-wider">XR VISION 2026</div>
+            <div class="text-sm text-slate-500 hidden sm:block">次世代コンピューティングプラットフォームの現在地</div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-12">
+
+        <header class="text-center max-w-3xl mx-auto space-y-4">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
+                XR市場トレンド 2026
+            </h1>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                2026年現在、XR（VR/AR/MR）技術は単なる「物珍しいガジェット」の段階を抜け出し、ビジネスの実用的なインフラや日常のコンピューティングプラットフォームへと本格的に移行しています。本レポートでは、社会のあらゆる階層に浸透したXRの最新動向を探索します。
+            </p>
+        </header>
+
+        <section class="glass-panel rounded-2xl p-6 md:p-8">
+            <div class="mb-6 text-center md:text-left">
+                <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 inline-block pb-1 mb-2">国内市場規模予測 (2026年)</h2>
+                <p class="text-slate-600 text-sm mt-2">
+                    主要5分野における市場規模の比較です。エンターテイメント領域が市場を牽引しつつ、産業や医療といったクリティカルな分野への本格的な投資が拡大していることが視覚的に確認できます。グラフのセグメントをクリックすると、下部の詳細情報が切り替わります。
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="w-full md:w-1/2">
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center space-y-4" id="chart-summary-panel">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                        <h3 class="text-lg font-bold text-blue-800">市場の牽引役</h3>
+                        <p class="text-slate-700 mt-1">エンターテイメント・ゲーム市場が約8,500億円と最大規模を誇りますが、産業・製造（約3,000億円）、医療（約1,800億円）など、B2B領域での実用化が急速に進展しています。</p>
+                        <p class="text-sm text-slate-500 mt-2">※グラフの各要素にホバー、またはタップして詳細をご確認ください。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 inline-block pb-1 mb-2">カテゴリ別 トレンド詳細</h2>
+                <p class="text-slate-600 text-sm mt-2">
+                    XR技術が各産業にどのような変革をもたらしているか、6つの主要カテゴリに分けて解説します。左側のカテゴリボタンを選択すると、右側にその分野の最新トレンドと具体的な事例が表示されます。情報探索を通じて、XRの社会実装の深さを体感してください。
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-6">
+                <div class="w-full lg:w-1/3 flex flex-col gap-3" id="category-buttons">
+                </div>
+
+                <div class="w-full lg:w-2/3 glass-panel rounded-2xl p-6 md:p-8 min-h-[400px] flex flex-col" id="category-content">
+                    <div class="flex-grow flex items-center justify-center text-slate-400">
+                        <p>左側のカテゴリを選択して詳細を表示</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel rounded-2xl p-6 md:p-8 mb-12 bg-gradient-to-br from-slate-50 to-slate-100">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-bold text-slate-800 inline-block pb-1 mb-2">2026年の技術的特異点（総括）</h2>
+                <p class="text-slate-600 text-sm max-w-2xl mx-auto">
+                    XRが「実証実験」から「不可欠なインフラ」へと完全に移行した背景には、以下の3つの強力な技術的推進力があります。これらが複雑に絡み合い、次世代コンピューティングプラットフォームを形成しています。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100">
+                    <div class="text-4xl mb-4">🥽</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">1. デバイスの進化</h3>
+                    <p class="text-slate-600 text-sm">
+                        長時間の常時装着が可能なレベルまでの軽量化と、明るい場所でも鮮明な高輝度化が実現。もはや特殊な機材ではなく、日常的なウェアラブルデバイスとなりました。
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2. AIとのネイティブ統合</h3>
+                    <p class="text-slate-600 text-sm">
+                        Google GeminiやApple Intelligence等のマルチモーダルAIがデバイスと深く統合。ユーザーの空間内の情報をリアルタイムに解析し、文脈に沿った支援を自動で行います。
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100">
+                    <div class="text-4xl mb-4">🌐</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">3. 社会実装の深化</h3>
+                    <p class="text-slate-600 text-sm">
+                        単発の導入テストは終了し、教育、医療、製造の現場において、人命やコストに関わるクリティカルな「基幹システム」としての運用フェーズに突入しています。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm">
+        <p>2026 デバイストレンドモニタリング｜XRデバイス</p>
+    </footer>
+
+    <script>
+        const reportData = [
+            {
+                id: 'entertainment',
+                title: 'エンターテイメント・ゲーム',
+                icon: '🎬',
+                marketSize: 8500,
+                color: '#3B82F6', 
+                summary: '「空間コンピューティング」による新しいメディア体験とプライベートシアター化',
+                points: [
+                    { title: 'プライベートシアターの定着', desc: 'XREAL One Pro（1,500ニトの高輝度）やVITURE Beast XRなどの「エンタメ特化型ARグラス」が台頭。カフェや移動中など場所を選ばず100インチ以上の巨大スクリーンで映画やゲームに没入するスタイルが定着。' },
+                    { title: '空間コンテンツの装飾化', desc: 'Apple Vision Pro等により、単なる映像視聴を超え、デジタルで作られたスノードームや時計を現実の部屋の定位置に「インテリアとして飾る」新しい価値観が誕生。' },
+                    { title: 'メディアの拡張', desc: '没入型シネマやバーチャルプレミアなど、映画のストーリーテリングが空間全体へと拡張。' }
+                ]
+            },
+            {
+                id: 'industry',
+                title: '産業シミュレーション・製造・防衛',
+                icon: '🏭',
+                marketSize: 3000,
+                color: '#F59E0B', 
+                summary: '「デジタルツイン」の社会実装とミッションクリティカルな実運用への移行',
+                points: [
+                    { title: 'デジタルツインの社会実装', desc: 'Varjo XR-4等の超高精細デバイスが軍事・航空宇宙の標準インフラ化。スイスBRUNNER社のMRフライトシミュレーターは欧州航空安全局から認定を受け、MR訓練が実際の飛行時間としてカウントされる事例も登場。' },
+                    { title: '非破壊メンテナンス', desc: 'トヨタ自動車等の製造業で、実際の車両に設計データを重ね合わせて内部構造をMRで「透視」。作業の平準化やエラー削減を実現。' },
+                    { title: '遠隔支援の爆発的普及', desc: '熟練労働者不足を補うため、スマートグラスを通じた「See-what-I-see（私が見ているものを見て）」モデルの遠隔支援が一般化。' }
+                ]
+            },
+            {
+                id: 'education',
+                title: '教育・研修',
+                icon: '📚',
+                marketSize: 1700,
+                color: '#10B981', 
+                summary: '「適応型トレーニング」と危険作業の安全な疑似体験',
+                points: [
+                    { title: '安全な擬似体験', desc: 'JR東日本による線路工事の安全教育や、セコムによる避難訓練シミュレーションなど、現実では危険を伴う現場体験を安全かつ低コストで実施するVR研修が標準手法に。' },
+                    { title: '適応型トレーニング', desc: '企業におけるVRトレーニングは単発の導入から、従業員の役割やスキルに合わせてコンテンツがリアルタイムに更新・調整される「継続的な学習プラットフォーム」へと進化し、投資対効果を最大化。' }
+                ]
+            },
+            {
+                id: 'healthcare',
+                title: '医療・ヘルスケア',
+                icon: '🏥',
+                marketSize: 1800,
+                color: '#EF4444', 
+                summary: '遠隔手術支援と患者ケアのデジタル化',
+                points: [
+                    { title: '5G/6Gによる遠隔手術支援', desc: '地方の執刀医がMRヘッドセットを装着し、都市部の専門医と視界を共有。空間上に直接切開ラインや血管の位置を描画してナビゲーションを行う高度な遠隔支援が実用化され、医療格差の解消に貢献。' },
+                    { title: '患者ケアの向上', desc: '「MediOS」などのソリューションを用いて、手術前のプロセスや治療計画を3D可視化（インフォームド・コンセント）。患者の不安を劇的に軽減し、医療スタッフの負担を削減。' }
+                ]
+            },
+            {
+                id: 'retail',
+                title: '小売・マーケティング',
+                icon: '🛍️',
+                marketSize: 1000,
+                color: '#8B5CF6', 
+                summary: 'AR試着とバーチャル店舗による購買体験の革新',
+                points: [
+                    { title: '購買自信の向上', desc: 'ARを用いた商品の仮想試着や家具の配置シミュレーションが一般化。消費者の購買への自信を最大80%向上させ、返品率の有意な低下につながっている（Snap Inc.調査等）。' },
+                    { title: 'インタラクティブ店舗', desc: '店舗内に設置されたインタラクティブ・キオスクやスマートディスプレイが、パーソナライズされたおすすめ商品や在庫情報を提供し、顧客エンゲージメントを深化。' }
+                ]
+            },
+            {
+                id: 'office',
+                title: 'オフィス・コラボレーション',
+                icon: '💼',
+                marketSize: 0, 
+                color: '#64748B', 
+                summary: 'AIと融合した「空間ワークステーション」と自然言語コーディング',
+                points: [
+                    { title: '空間ワークステーション', desc: 'Pico 4 UltraやApple Vision Proなどにより、複数の2Dアプリ（ブラウザやSNS）と3D環境を同一空間に混在させる、ノートPCに代わる仮想ワークスペースが定着。' },
+                    { title: 'Vibe Coding（バイブコーディング）', desc: 'ユーザーが自然言語でアイデアを話す（プロンプトを出す）だけで、背後でAIがコードやプロトタイプを自動生成する新しい開発スタイルがトレンドに。非エンジニアでも直感的にプロダクトを構築可能。' }
+                ]
+            }
+        ];
+
+        let marketChartInstance = null;
+        let activeCategoryIndex = 0;
+
+        function initChart() {
+            const chartData = reportData.filter(d => d.marketSize > 0);
+            
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            marketChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.map(d => d.title.split('・')[0]), 
+                    datasets: [{
+                        data: chartData.map(d => d.marketSize),
+                        backgroundColor: chartData.map(d => d.color),
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    family: "'Helvetica Neue', 'Hiragino Kaku Gothic ProN', sans-serif",
+                                    size: 13
+                                },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('ja-JP').format(context.parsed) + ' 億円';
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const originalId = chartData[index].id;
+                            const realIndex = reportData.findIndex(d => d.id === originalId);
+                            renderCategoryDetail(realIndex);
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderCategoryButtons() {
+            const container = document.getElementById('category-buttons');
+            container.innerHTML = '';
+
+            reportData.forEach((category, index) => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn w-full text-left px-5 py-4 rounded-xl font-medium transition-all duration-200 border border-slate-200 bg-white hover:bg-slate-50 flex items-center gap-3 text-slate-700`;
+                btn.innerHTML = `<span class="text-2xl">${category.icon}</span> <span>${category.title}</span>`;
+                btn.onclick = () => renderCategoryDetail(index);
+                
+                if (index === 0) {
+                    btn.classList.add('active');
+                }
+                
+                container.appendChild(btn);
+            });
+        }
+
+        function renderCategoryDetail(index) {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            if(buttons[index]) buttons[index].classList.add('active');
+
+            const category = reportData[index];
+            const contentContainer = document.getElementById('category-content');
+            
+            let pointsHtml = category.points.map(point => `
+                <div class="mb-5 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+                    <h4 class="font-bold text-slate-800 text-lg mb-2 flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full" style="background-color: ${category.color}"></span>
+                        ${point.title}
+                    </h4>
+                    <p class="text-slate-600 leading-relaxed text-sm">${point.desc}</p>
+                </div>
+            `).join('');
+
+            let marketSizeHtml = category.marketSize > 0 
+                ? `<div class="inline-flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full text-sm font-bold text-slate-700 mb-4">
+                     📊 国内市場規模予測: 約 <span class="text-xl" style="color: ${category.color}">${category.marketSize.toLocaleString()}</span> 億円
+                   </div>` 
+                : `<div class="inline-flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full text-sm font-bold text-slate-700 mb-4">
+                     📊 市場規模: 算出中 / 新規市場
+                   </div>`;
+
+            contentContainer.innerHTML = `
+                <div class="fade-in h-full flex flex-col">
+                    <div class="mb-4">
+                        <h3 class="text-3xl font-extrabold text-slate-800 mb-2 flex items-center gap-3">
+                            ${category.icon} ${category.title}
+                        </h3>
+                        <p class="text-lg text-slate-500 font-medium">${category.summary}</p>
+                    </div>
+                    ${marketSizeHtml}
+                    <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar mt-2">
+                        ${pointsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            renderCategoryButtons();
+            renderCategoryDetail(0); 
+        });
+    </script>
+</body>
+</html>

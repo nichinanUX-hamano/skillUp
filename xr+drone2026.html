@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XR × ドローン：2026年 シナジー戦略ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Slate (Base), Indigo (XR), Teal (Drone) -->
+    <!-- Application Structure Plan: 
+         This SPA is structured to intuitively explain a complex "Synergy". 
+         1. Introduction & The "Loop": Explains the core mechanism (Drone collects -> XR visualizes) using HTML/CSS layout.
+         2. Cross-Sector Explorer: A dashboard layout where users click segments of a Polar Area Chart to reveal specific industry use cases. This non-linear exploration allows users to focus on sectors relevant to them while seeing the breadth of the impact.
+         3. Conclusion: A summary of the 2026 competitive advantage.
+         This structure translates a textual report into an exploratory learning experience. -->
+    <!-- Visualization & Content Choices: 
+         1. Synergy Loop -> Goal: Inform mechanism -> Interactive HTML/CSS Flexbox diagram -> Shows connection without complex SVG.
+         2. Sector Overview -> Goal: Compare/Organize impact areas -> Polar Area Chart (Chart.js) -> Represents 360-degree impact. Clicking a segment updates the detailed text block.
+         3. Detailed Content -> Goal: Inform specifics -> Dynamic DOM updates via JS -> Keeps the UI clean while providing deep dives into specific use cases.
+         CONFIRMING NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        /* Required Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* Custom Animations & Styles */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-border {
+            animation: pulseBorder 2s infinite;
+        }
+        @keyframes pulseBorder {
+            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+        
+        .drone-pulse {
+            animation: pulseDrone 2s infinite;
+        }
+        @keyframes pulseDrone {
+            0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <div class="inline-block bg-gradient-to-r from-indigo-600 to-teal-600 text-transparent bg-clip-text font-bold text-sm tracking-widest uppercase mb-2">Cross-Sector Synergy 2026</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight mb-6">XR × ドローン シナジー戦略</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                2026年、XRによる「情報の空間化」とドローンによる「物理移動の自律化」が融合。従来のビジネスモデルを根本から塗り替える、2つのテクノロジーの強力な相乗効果を探索します。
+            </p>
+        </header>
+
+        <!-- Core Mechanism Section -->
+        <section class="mb-20">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 md:p-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">価値創造のコア・ループ</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">
+                        このシナジーの最大の優位性は、「現場のデジタル化」と「判断の空間化」が同時に、かつリアルタイムに発生する点にあります。専門知識がなくても、直感的な意思決定が可能になります。
+                    </p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                    <!-- Drone Node -->
+                    <div class="flex flex-col items-center w-full md:w-1/3">
+                        <div class="w-24 h-24 rounded-full bg-teal-50 border-4 border-teal-500 flex items-center justify-center text-4xl mb-4 drone-pulse relative z-10">
+                            🚁
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-700 mb-2">ドローン</h3>
+                        <p class="text-center text-sm text-slate-600 font-medium bg-slate-50 py-2 px-4 rounded-lg w-full">データ収集の自動化</p>
+                        <p class="text-center text-xs text-slate-500 mt-2">人が立ち入れない場所からの自律的な情報吸い上げと物理的移動。</p>
+                    </div>
+
+                    <!-- Arrow/Connection (CSS styling only) -->
+                    <div class="hidden md:flex flex-col items-center justify-center relative w-16">
+                        <div class="text-3xl text-slate-300">🔁</div>
+                    </div>
+
+                    <!-- XR Node -->
+                    <div class="flex flex-col items-center w-full md:w-1/3">
+                        <div class="w-24 h-24 rounded-full bg-indigo-50 border-4 border-indigo-500 flex items-center justify-center text-4xl mb-4 pulse-border relative z-10">
+                            🥽
+                        </div>
+                        <h3 class="text-xl font-bold text-indigo-700 mb-2">XR (VR/AR/MR)</h3>
+                        <p class="text-center text-sm text-slate-600 font-medium bg-slate-50 py-2 px-4 rounded-lg w-full">情報の直感化 (空間化)</p>
+                        <p class="text-center text-xs text-slate-500 mt-2">収集したデータを専門知識不要で理解できる形に空間へ展開。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Sector Explorer -->
+        <section class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2 border-l-4 border-indigo-500 pl-4">産業別シナジー・エクスプローラー</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    グラフの各セクター（扇形）をクリックすると、その産業におけるXRとドローンの具体的な掛け合わせ事例と、それによって生まれる新しい価値の詳細が表示されます。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Left: Chart.js Container -->
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col justify-center h-full">
+                    <h3 class="text-center text-sm font-semibold text-slate-500 mb-4 uppercase tracking-wider">影響領域マップ (クリックで詳細表示)</h3>
+                    <div class="chart-container">
+                        <canvas id="synergyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right: Dynamic Content Panel -->
+                <div id="detail-panel" class="bg-slate-800 rounded-3xl shadow-lg p-8 md:p-10 text-white min-h-[400px] flex flex-col transition-all duration-300 relative overflow-hidden">
+                    <!-- Background Accent -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-500/20 to-teal-500/20 rounded-bl-full pointer-events-none"></div>
+                    
+                    <div class="relative z-10 flex-grow">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span id="panel-icon" class="text-5xl bg-white/10 p-3 rounded-2xl">🏭</span>
+                            <h3 id="panel-title" class="text-2xl md:text-3xl font-bold">産業シミュレーション・維持管理</h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <!-- Drone Contribution -->
+                            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                                <h4 class="text-teal-400 font-semibold mb-2 flex items-center gap-2">
+                                    <span>🚁</span> ドローンの役割 (センシング/移動)
+                                </h4>
+                                <p id="panel-drone" class="text-slate-300 text-sm leading-relaxed">
+                                    LiDARや赤外線カメラによる高精度センシングと、現場の自律的な3Dスキャン。
+                                </p>
+                            </div>
+
+                            <!-- XR Contribution -->
+                            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                                <h4 class="text-indigo-400 font-semibold mb-2 flex items-center gap-2">
+                                    <span>🥽</span> XRの役割 (空間可視化/UI)
+                                </h4>
+                                <p id="panel-xr" class="text-slate-300 text-sm leading-relaxed">
+                                    MRデバイスによる内部構造の「透視」と、遠隔地でのデジタルツインリアルタイム同期。
+                                </p>
+                            </div>
+
+                            <!-- Specific Outcomes -->
+                            <div>
+                                <h4 class="text-white font-semibold mb-3 border-b border-white/20 pb-2">実現する具体的事例</h4>
+                                <ul id="panel-points" class="space-y-3">
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-indigo-400 mt-0.5">■</span>
+                                        <span class="text-slate-300 text-sm">ドローン取得データをMRで重ね合わせ、壁の裏側にある配線やひび割れを「透視」確認。</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-indigo-400 mt-0.5">■</span>
+                                        <span class="text-slate-300 text-sm">自律飛行で構築されたデジタルツインを空間ワークステーションに配信し、遠隔地から現場へリアルタイム指示。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl p-8 md:p-12 text-center border border-slate-300">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-6">2026年以降の競争優位性</h2>
+            <p class="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed font-medium">
+                データ収集（ドローン）と直感的な理解（XR）のループを確立した企業が、産業インフラにおける主導権を握ります。<br class="hidden md:block">
+                話しかけるだけでドローンが自律的に動き、その結果が目の前の空間に表示されるSFのようなワークフローは、すでに実用の段階に入っています。
+            </p>
+        </section>
+
+    </div>
+
+    <script>
+        // Data Structure corresponding to the Source Report
+        const synergyData = {
+            industry: {
+                icon: "🏭",
+                title: "産業シミュレーション・維持管理",
+                drone: "LiDARや赤外線カメラ等による高精度センシングと、現場の自律的な3Dスキャン。",
+                xr: "MRデバイスを通じた内部構造の「透視」と、オフィスでのデジタルツイン同期。",
+                points: [
+                    "ドローン取得データを現場のMRグラスに重ね合わせ、壁裏の配線やひび割れを非破壊で「透視」確認。",
+                    "自律ドローンが構築するデジタルツインを空間ワークステーションに配信。遠隔管理者が現場にいる感覚でリアルタイムに進捗管理・指示出し。"
+                ],
+                color: "rgba(99, 102, 241, 0.8)" // Indigo
+            },
+            education: {
+                icon: "👷",
+                title: "教育・研修・安全管理",
+                drone: "危険地帯・災害現場への自律アクセスとライブ映像の取得。",
+                xr: "安全な場所での没入体験と、熟練者の視点トラッキングの再現。",
+                points: [
+                    "【没入型指揮管制】ドローンが捉えた被災地のライブ映像をVR空間で共有。安全な場所から3Dで状況を把握し作戦を練る。",
+                    "【スキル伝承】熟練操縦者の視点と操作（アイトラッキング等）をXRで記録。新人がその視点を「追体験」し、複雑な操縦スキルを高速習得。"
+                ],
+                color: "rgba(14, 165, 233, 0.8)" // Sky
+            },
+            medical: {
+                icon: "🏥",
+                title: "医療・ヘルスケア・緊急救助",
+                drone: "AEDや医療キットなどの緊急物資の高速・自律配送。",
+                xr: "空間への直接描画による、非専門家への直感的な遠隔支援（MRガイダンス）。",
+                points: [
+                    "離島やへき地へのドローンによる医療物資配送と、到着後の処置をシームレスに連携。",
+                    "受け取った非専門家がARグラスを装着。専門医が「どのボタンを押すか」「どこにパッドを貼るか」を空間上に直接描画してナビゲート。"
+                ],
+                color: "rgba(20, 184, 166, 0.8)" // Teal
+            },
+            entertainment: {
+                icon: "✨",
+                title: "エンタメ・小売・マーケティング",
+                drone: "物理的な看板や商品の運搬、実世界でのダイナミックなカメラワーク。",
+                xr: "デジタルエフェクトやCGの空間への合成とパーソナライズ。",
+                points: [
+                    "【動くAR広告】ドローンが運ぶ物理的看板に対し、ARグラス越しにデジタルエフェクトを重ね、街中を舞台にした空間広告を展開。",
+                    "【進化したレーシング】実写のFPVドローン映像に、XR側で「ゲート」「敵機」などのCGを合成。観客もARグラスでゲームのような演出と共に観戦。"
+                ],
+                color: "rgba(139, 92, 246, 0.8)" // Violet
+            },
+            office: {
+                icon: "🏢",
+                title: "オフィス・コラボレーション",
+                drone: "自然言語の指示に従い自律的にミッションを遂行するエージェント。",
+                xr: "自然言語コーディング（Vibe Coding）と連動した空間UIの提供。",
+                points: [
+                    "【フリート管理】XR空間上の地図を指差し「このエリアの在庫を数えて」と話すだけで、ドローンが自動でミッションを開始。",
+                    "複雑なプログラミング不要で、ミッション結果もXR上のウィジェットとして空間に即座に表示される直感的な運用。"
+                ],
+                color: "rgba(59, 130, 246, 0.8)" // Blue
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Initialize Polar Area Chart
+            const ctx = document.getElementById('synergyChart').getContext('2d');
+            
+            const labels = ['産業・維持管理', '教育・研修', '医療・救助', 'エンタメ・小売', 'オフィス'];
+            const keys = ['industry', 'education', 'medical', 'entertainment', 'office'];
+            const colors = [
+                synergyData.industry.color,
+                synergyData.education.color,
+                synergyData.medical.color,
+                synergyData.entertainment.color,
+                synergyData.office.color
+            ];
+
+            const chart = new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'シナジー領域',
+                        data: [100, 100, 100, 100, 100], // Equal weight for visualization
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scale: {
+                        ticks: { display: false },
+                        grid: { color: 'rgba(203, 213, 225, 0.4)' } // slate-300
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: { family: "'Noto Sans JP', sans-serif", size: 12 },
+                                color: '#475569'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { family: "'Noto Sans JP', sans-serif" },
+                            bodyFont: { family: "'Noto Sans JP', sans-serif" },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' クリックして詳細を表示';
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const dataIndex = elements[0].index;
+                            const selectedKey = keys[dataIndex];
+                            updatePanel(selectedKey);
+                        }
+                    }
+                }
+            });
+
+            // 2. DOM Elements for Panel Update
+            const panel = document.getElementById('detail-panel');
+            const pIcon = document.getElementById('panel-icon');
+            const pTitle = document.getElementById('panel-title');
+            const pDrone = document.getElementById('panel-drone');
+            const pXR = document.getElementById('panel-xr');
+            const pPoints = document.getElementById('panel-points');
+
+            // 3. Update Function
+            function updatePanel(key) {
+                const data = synergyData[key];
+                
+                // Trigger Fade out
+                panel.classList.remove('fade-in');
+                panel.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    // Update Content
+                    pIcon.textContent = data.icon;
+                    pTitle.textContent = data.title;
+                    pDrone.textContent = data.drone;
+                    pXR.textContent = data.xr;
+                    
+                    // Rebuild points list
+                    pPoints.innerHTML = '';
+                    data.points.forEach(point => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-start gap-3';
+                        li.innerHTML = `
+                            <span class="text-indigo-400 mt-0.5">■</span>
+                            <span class="text-slate-300 text-sm">${point}</span>
+                        `;
+                        pPoints.appendChild(li);
+                    });
+
+                    // Trigger Fade in
+                    panel.style.opacity = '1';
+                    panel.classList.add('fade-in');
+                }, 200);
+            }
+
+            // Initialize with default view (Industry)
+            // No action needed as HTML is pre-populated with 'industry' data
+        });
+    </script>
+</body>
+</html>
