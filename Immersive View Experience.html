@@ -1,0 +1,854 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Immersive View Experience</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0634be6b-00f8-4713-8d7a-57fe36d955c0" class="page sans"><header><div class="page-header-icon undefined"><img class="icon notion-static-icon" src="https://www.notion.so/icons/video-camera_blue.svg"/></div><h1 class="page-title" dir="auto">Immersive View <strong>Experience</strong></h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/clock_gray.svg" style="width:14px;height:14px;display:block"/></span>作成日時</th><td><time>2024年8月30日 14:24</time></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>タグ</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><h3 id="1adcee0b-d34e-803d-9663-f6df62a9a24b" class="">没入型視聴体験</h3></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80d2-a7fe-df1c00affc47" class=""><strong>Immersive Movie（イマーシブ・ムービー）｜</strong>没入感のある映画・動画</p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8002-937a-dbc620482c60" class=""><strong>Immersive Video（イマーシブ・ビデオ）｜</strong>没入型の動画コンテンツ</p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8099-a83a-de0343e74f02" class=""><strong>Immersive Experience（イマーシブ・エクスペリエンス）｜</strong>没入体験を提供するコンテンツ</p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-809d-8bbb-e0202fdab56f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-806a-b4be-f976a9d99966" class=""><strong>イマーシブ動画と同意・類義語</strong></p></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-80e4-b2cb-cdf86f605864" class="bulleted-list"><li style="list-style-type:disc">360度動画（360°動画）</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-80d7-ba6c-c9d1f53b39d8" class="bulleted-list"><li style="list-style-type:disc">VR動画（バーチャルリアリティ動画）</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-805b-9a41-e24cf8dae07e" class="bulleted-list"><li style="list-style-type:disc">没入型動画</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-8040-bd9d-d982dd298923" class="bulleted-list"><li style="list-style-type:disc">仮想現実動画</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-80f1-a901-ef3dc63c7d15" class="bulleted-list"><li style="list-style-type:disc">インタラクティブ動画</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-802c-a778-f35674a57ea0" class="bulleted-list"><li style="list-style-type:disc">パノラマ動画</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-8046-af2b-ee15b87cecc6" class="bulleted-list"><li style="list-style-type:disc">VRコンテンツ</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-8076-a868-e69a26e427d2" class="bulleted-list"><li style="list-style-type:disc">立体視動画</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-8071-ae75-eb104bc8b221" class="bulleted-list"><li style="list-style-type:disc">XR動画（拡張現実・複合現実を含む表現）</li></ul></div><div style="display:contents" dir="auto"><ul id="1adcee0b-d34e-80e3-88cb-f7fd9c3ff37a" class="bulleted-list"><li style="list-style-type:disc">仮想体験型動画</li></ul></div><div style="display:contents" dir="auto"><hr id="1adcee0b-d34e-80f5-a60e-d53dc6964a89"/></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-808e-b849-f51957877736" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="1adcee0b-d34e-8090-aa2b-d982d73a5a47" class="">主要技術</h2></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80b6-bc66-f0cf289447ee" class="">モノコピックとステレオコピック</p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-8071-a12f-d36ed81fdfe1"><a href="https://chatgpt.com/share/67c7ce59-e0d8-8000-8589-59c042e85cac" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">ChatGPT - モノコピックとステレオコピック</div><div class="bookmark-description">Shared via ChatGPT</div></div><div class="bookmark-href"><img src="https://cdn.oaistatic.com/assets/favicon-180x180-od45eci6.webp" class="icon bookmark-icon"/>https://chatgpt.com/share/67c7ce59-e0d8-8000-8589-59c042e85cac</div></div><img src="https://cdn.oaistatic.com/assets/chatgpt-share-og-u7j5uyao.webp" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8057-b0fb-ff521ca28714" class="">モノラル360・ステレオ360｜奥行を感じる、環境｜3DoF<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-808a-bec7-fcd33d418eb7" class="">1カメ撮影　360カメラ（反対方向の同時撮影）　パノラマ｜360カメラ2視点撮影<br/>球体に動画を貼り付けてるイメージ</p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-8059-8ee0-d61f8772be4e"><a href="https://youtu.be/AKvzkAy8ymM?si=qkv605qqdhx1BtaX" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">【360°動画】五十嵐圭選手3Pシュート</div><div class="bookmark-description">五十嵐圭選手の3Pシュート動画です！</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/ba56c95d/img/logos/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/AKvzkAy8ymM?si=qkv605qqdhx1BtaX</div></div><img src="https://i.ytimg.com/vi/AKvzkAy8ymM/sddefault.jpg" class="bookmark-image"/></a></figure></div></div></p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8052-a73c-fa84eb685036" class="">ステレオ3D｜飛び出して見える 180VR｜6DoF<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8096-887d-f8c82e38f4d9" class="">2カメ撮影　広角カメラ（一方向）　人の目の間隔（約65ミリ）に配置<br/>奥行情報・視差を用いた立体感<br/>画角が限定される</p></div><div style="display:contents" dir="ltr"><figure id="1c0cee0b-d34e-80a7-9bb0-e894ee6e864e"><a href="https://youtu.be/StEeUYM7hxk?si=NLIR6n8Kpbts_XK3" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Pak Mei Kung Fu in 3D VR180 | Authentic Chinese Martial Arts: Fists, Weapons &amp; Philosophy</div><div class="bookmark-description">Join Grandmaster Liu Zhiqiang, a direct descendant of Great-Grandmaster Cheung Lai Cheun (張禮泉) and Lau Siu Chun (刘泉), as he unveils the secrets of Bak Mei Hup Ging Do (白眉合劲道) —also known as White Eyebrow Kung Fu—a legendary Southern Chinese martial art celebrated for its explosive power, close-range combat, and profound philosophy.
+
+In this immersive 180° experience, you’ll witness the living essence of Pak Mei:
+🔹 Fist Demonstrations: Precision, power, and the intricate forms of Pak Mei in action.
+🔹 Weapon Techniques: Master Liu showcases the art of Pak Mei weapons, including the iconic Six-and-a-Half Point Staff of Guangdong and the versatile broadsword.
+🔹 Philosophy and Balance: Discover the profound influence of Yin and Yang, the harmony of hard and soft, and the deeper philosophy that shapes Pak Mei Kung Fu.
+🔹 Combat Applications: Practical techniques that demonstrate Pak Mei’s efficiency and brilliance in real-world scenarios.
+
+Whether you’re a martial arts enthusiast passionate about Kung Fu, a VR explorer seeking an immersive experience, or someone drawn to the wisdom of Chinese culture and philosophy, this video has something for you.
+
+Why Watch This Video?
+✔️ True Authenticity: Learn from a living master carrying on the Pak Mei lineage.
+✔️ Immersive Format: Shot in 8K 60fps 3D VR180, putting you right in the training hall for a lifelike experience.
+✔️ Cultural and Philosophical Insight: Explore how the principles of Yin and Yang influence fists, weapons, and the deeper understanding of life in martial arts.
+
+[ 🥽 HOW TO WATCH ] 
+➡️ Stream directly on Meta Quest 3 or 3S in 8K60 using YouTube VR app (FREE)
+➡️ Stream directly on Quest TV: https://www.oculus.com/experiences/media/1635238797072598/
+➡️ Stream it in 8K on &quot;Spatial Film&quot; app on Vision Pro: https://bit.ly/3TCNyrE
+➡️ Download for Apple Vision Pro &amp; enjoy stunning 8K HDR: https://www.patreon.com/posts/pak-mei-kung-fu-118231551
+➡️ Prefer Spatial Video instead? We’re proud to offer one of the world’s only sources for 4K HDR spatial video—get it exclusively here: https://www.patreon.com/c/hughhoufilm/shop
+
+About Pak Mei Kung Fu:
+Originating from Southern China, Pak Mei (White Eyebrow) is famed for its balance of hard and soft power, compact movements, and devastating close-range techniques. It embodies the philosophy of Yin and Yang, bridging martial arts with nature, balance, and cultural wisdom.
+
+🎥 Watch now and experience Pak Mei Kung Fu like never before—step into the art, the philosophy, and the movement.
+
+Shot on Canon R5 Mark II and R5 C - Review here: https://youtu.be/Ne7Eg-M78Lk
+Get the Canon R5 Mark II on B&amp;H: https://bhpho.to/46jiWkd
+Get Canon R5 C VR180 Creator Kit (on sale - and still the best kit for VR180)
+➜ B&amp;H: https://bhpho.to/3wqxVLa
+
+🐕 FOLLOW ME &amp; Kimchi:
+➜ Instagram: https://www.instagram.com/hugh.hou/
+➜ Facebook: https://www.facebook.com/360creator
+➜ Meta Quest TV: https://ocul.us/30uMZUj
+➜ TikTok: https://www.tiktok.com/@hughhou/
+🤝 We are open for HIRE! Reach out: hi[at]hughhou.com
+
+🔔 Subscribe for more immersive 180 content!</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/ca191cfa/img/logos/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/StEeUYM7hxk?si=NLIR6n8Kpbts_XK3</div></div><img src="https://i.ytimg.com/vi/StEeUYM7hxk/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80fd-978f-e0c379aa91da" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><hr id="1aecee0b-d34e-8006-98ae-dc940688ebb8"/></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80a6-a1bb-f5ef0b0dbb9e" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="1adcee0b-d34e-8006-bcec-f36d3d9c8983" class="">機材</h2></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80c8-9ebc-fcde47e915e0" class="">モノコピック撮影（モノラル360°）<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-802c-a650-da378581fa3c" class=""><strong>Insta360 X4｜8K360｜￥80000</strong></p></div></div></p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-80f8-b72b-f1ca106ab4ed"><a href="https://store.insta360.com/product/x4?c=2994&amp;from=nav&amp;_gl=1*hd4h5v*_up*MQ..&amp;gclid=CjwKCAiA5pq-BhBuEiwAvkzVZVvoa43VCBmdRHtv96rEto3OfghUOuywMJYutgDWTUQRJQeqKC-zbRoCnFwQAvD_BwE" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Insta360 X4</div><div class="bookmark-description">The ultimate 8K 360 action camera! Huge 135min battery life, waterproof to 33ft, Invisible Selfie Stick effect and 4K60fps Single-Lens Mode. Buy now.</div></div><div class="bookmark-href"><img src="https://res.insta360.com/static/b8721190913876c5c9f91ee12ec8dd5f/favicon.ico" class="icon bookmark-icon"/>https://store.insta360.com/product/x4?c=2994&amp;from=nav&amp;_gl=1*hd4h5v*_up*MQ..&amp;gclid=CjwKCAiA5pq-BhBuEiwAvkzVZVvoa43VCBmdRHtv96rEto3OfghUOuywMJYutgDWTUQRJQeqKC-zbRoCnFwQAvD_BwE</div></div><img src="https://res.insta360.com/dynamic/store/0d86cfc9f88381d2898bfc40e003382e/2673_8fb459c1-a26c-485e-a0bb-3efde15357f2.png" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8061-8899-c5b601170275" class="">ステレオコピック撮影（ステレオ3D）<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80eb-8b22-e15e4f5d9bec" class=""><strong>Insta360 GO 3S｜4K｜￥65000×2</strong></p></div></div></p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-801f-a514-c2f28e1f69b8"><a href="https://store.insta360.com/product/go-3s?c=3120&amp;from=nav&amp;_gl=1%2A5bdk80%2A_up%2AMQ..&amp;gclid=CjwKCAiA5pq-BhBuEiwAvkzVZVvoa43VCBmdRHtv96rEto3OfghUOuywMJYutgDWTUQRJQeqKC-zbRoCnFwQAvD_BwE" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Insta360 GO 3S</div><div class="bookmark-description">Your tiny mighty 4K cam. Mount anywhere for hands-free POVs and creative angles. New Action Pod with flip touchscreen for remote control &amp; live preview.</div></div><div class="bookmark-href"><img src="https://res.insta360.com/static/b8721190913876c5c9f91ee12ec8dd5f/favicon.ico" class="icon bookmark-icon"/>https://store.insta360.com/product/go-3s?c=3120&amp;from=nav&amp;_gl=1%2A5bdk80%2A_up%2AMQ..&amp;gclid=CjwKCAiA5pq-BhBuEiwAvkzVZVvoa43VCBmdRHtv96rEto3OfghUOuywMJYutgDWTUQRJQeqKC-zbRoCnFwQAvD_BwE</div></div><img src="https://res.insta360.com/dynamic/store/c897b5b6bd4ff434aa81f366d6615b1f/104018_5abab141-1803-4606-9134-a8ffe3492c01.png" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80da-99fc-c1ccedd3bedb" class="">マイク<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80be-8a54-ceb6bd15fefb" class=""><strong>H3-VR｜Ambisonics対応｜￥30000</strong></p></div></div></p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-8095-82ac-dd1e52cca5f6"><a href="https://zoomcorp.com/ja/jp/handheld-recorders/handheld-recorders/h3-vr-360-audio-recorder/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">H3-VR</div><div class="bookmark-description">H3-VR 360º Audio Recorder</div></div><div class="bookmark-href"><img src="https://zoomcorp.com/static/img/favicons/zoomicon-192.png" class="icon bookmark-icon"/>https://zoomcorp.com/ja/jp/handheld-recorders/handheld-recorders/h3-vr-360-audio-recorder/</div></div><img src="https://zoomcorp.com/media/images/H3VR_listImage_1.original.png" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80d2-8a87-e9d979587314" class="">三脚ウェイト<div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-80d5-abb0-d4e4a8240d62" class="">要検討　あってもなくても吹っ飛ぶ</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80aa-b381-da675ca684a4" class="">編集用3Dメガネ</p></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-80ff-89da-f09502694520"><a href="https://amzn.asia/d/9ICesXJ" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">アナグリフ3Dメガネ(Foldable) 3D立体 レンズ色/赤・青 フレーム素材/プラスチック 着用方法/フレーム フレームカラー(黒) 補完型（色差型） 眼鏡 メガネ レンズ素材（樹脂）画像 立体 映像 鑑賞 軽量 現実感 高性能 赤と青のフォーマットの映画/写真 (1pc, ブラック)</div><div class="bookmark-description">アナグリフ3Dメガネ(Foldable) 3D立体 レンズ色/赤・青 フレーム素材/プラスチック 着用方法/フレーム フレームカラー(黒) 補完型（色差型） 眼鏡 メガネ レンズ素材（樹脂）画像 立体 映像 鑑賞 軽量 現実感 高性能 赤と青のフォーマットの映画/写真 (1pc, ブラック)が3Dメガネストアでいつでもお買い得。当日お急ぎ便対象商品は、当日お届け可能です。アマゾン配送商品は、通常配送無料（一部除く）。</div></div><div class="bookmark-href"><img src="https://www.amazon.co.jp/favicon.ico" class="icon bookmark-icon"/>https://amzn.asia/d/9ICesXJ</div></div><img src="https://m.media-amazon.com/images/I/31+GNbnfFIL._BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-804c-9366-cd4f5a4d0a56" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="1adcee0b-d34e-808d-bb4c-ddc76b8e7f7c"/></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80af-b3c4-c3d372ab44d2" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="1adcee0b-d34e-80f9-bf0c-d2d75c1a3baa" class="">エディター</h2></div><div style="display:contents" dir="auto"><p id="1accee0b-d34e-806c-9aab-cfbf38faad01" class=""><strong>Premiere Pro</strong><div class="indented"><div style="display:contents" dir="auto"><p id="1accee0b-d34e-804d-9947-f6fcccccc892" class="">2024~ HMDプレビュー機能なくなってる<br/>VR用のトランジションあり </p></div></div></p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-804a-87c2-ed3efdb742a7" class=""><strong>After Effects</strong><div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-804d-a121-ee64345ca2e4" class="">未検証、VRツール豊富（らしい）</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8065-aee1-d1da73718d2f" class=""><strong>DaVinci Reolve Studio</strong><div class="indented"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-802f-a780-cad37e846ae1" class="">3D動画編集機能豊富</p></div><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-807b-95fb-c965a3660562" class="">アナグラフ対応メガネでプレビュー</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-802a-a2b4-c80c884a1c34" class="">
+</p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80d5-9617-fe939d421362" class="">Premiere編集・Davinciとの連携・カラグレ・フリッカー</p></div><div style="display:contents" dir="ltr"><figure id="1bacee0b-d34e-80e7-9e93-ec4ed611c3b5"><a href="https://youtu.be/n2Hc2ZQbUik?si=zKMN7hC9jFs9NF1c" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">VR180 &amp; 360 Video Editing Masterclass: Deflicker, AI Tripod Remove, Color Grade for Meta Quest 3</div><div class="bookmark-description">Episode Two here: https://youtu.be/4e0pVCu5ozM 👈
+Learn how to transform your VR videos into cinematic masterpieces in this tutorial using Meta Quest 3 and Premiere Pro to Davinci Resolve color grading workflow. From injecting footage from a 360 camera to removing unwanted flicker and using AI to remove tripods and lighting, this tutorial covers all the essential steps. Create that film look in VR and turn your footage into a film festival-worthy masterpiece. Subscribe to learn these VR editing skills and more!
+
+0:00 - What you&#x27;ll learn today
+1:18 - Watch out VR Film on Meta Quest 3
+2:16 - Tip 1: Use ProRes for VR Editing
+2:30 - Insta360 Studio Workflow
+2:47 - Premiere vs. Davinci Resolve (Why?)
+3:18 - Adobe Premiere VR editing setup overview
+4:21 - How to Fix Flicker in VR180 or 360 Video
+4:30 - PAL vs NTSC 
+4:51 - How to Setup Insta360 Camera for Flicker Free Capture
+5:15 - Deflicker Node in Davinci Resolve Pros &amp; Cons
+6:05 - BorisFX BCC VR Flicker Fixer
+7:12 - Fix Rolling Bands with RE:Vision DEFlicker
+8:17 - Remove Tripod in 360 Video with AI
+8:59 - Photoshop 2024 has 360 panorama editing feature!
+9:39 - Best Prompt for 360 photo editing with Photoshop Generative Fill
+10:36 - How to Transfer Premiere Pro VR Sequences to Davinci Resolve
+11:54 - VR Denoise with Neat Video
+12:06 - Fix Audio Conforming Issue in Davinci Resolve
+
+🎁 Deals Zone: 
+➜ Continuum VR Unit: https://bit.ly/45eXwTE (15% automatic applied with this link)
+🎨 Get Dehancer Pro: https://www.dehancer.com/ - Use code HUGHHOUFILM for 10% OFF
+➜ Nobe Display NDI from Time in Pixels: https://timeinpixels.com/nobe-display/ (Use coupon code: HUGHHOU to receive 20% off)
+➜ Zhiyun FIVERAY M20C: https://bit.ly/47bsQUo ($20 off during Holiday)
+➜ Topaz Video Enhance AI: http://bit.ly/2XJheGc
+👉 https://bit.ly/3N3ovef - ONE RS 1-inch 360: 10% discount + 1 x free invisible selfie stick + 1 x free T-shirt (save $105)
+👉 https://bit.ly/3gD1n9i - Insta360 Accessories: 10% off
+*Above are affiliated Links - you save money at the same time I earn a very small commission.
+
+🐕 FOLLOW ME &amp; Kimchi:
+➜ Instagram: https://www.instagram.com/hugh.hou/
+➜ Facebook: https://www.facebook.com/360creator
+➜ Meta Quest TV: https://ocul.us/30uMZUj
+➜ TikTok: https://www.tiktok.com/@hughhou/
+🤝 We are open for HIRE! Reach out: hi[at]hughhou.com</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/8943c222/img/logos/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/n2Hc2ZQbUik?si=zKMN7hC9jFs9NF1c</div></div><img src="https://i.ytimg.com/vi/n2Hc2ZQbUik/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><hr id="1adcee0b-d34e-80aa-9dc7-db52157c8ab6"/></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-8023-bae4-da3f31d92d2a" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="1adcee0b-d34e-808d-9499-d89406378b3c" class="">出力</h2></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-804b-af87-cd41acb4d755" class=""><mark class="highlight-yellow_background">イマーシブ動画で使われる主なフォーマット</mark></p></div><div style="display:contents" dir="auto"><div id="1aecee0b-d34e-80a3-b53f-fc0a917951de" class="column-list"><div style="display:contents" dir="auto"><div id="1aecee0b-d34e-8059-bebd-c70057b10e4b" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1adcee0b-d34e-8015-a15a-d93cc8db7a7e" class=""><strong>サイドバイサイド</strong></p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-80e2-aa9f-c32a67e09c18" class="">左右に視差を持った画像を表示<br/>魚眼・フラットどちらが使いやすいか要検証</p></div></div></div><div style="display:contents" dir="auto"><div id="1aecee0b-d34e-8006-973a-c8605b3c5725" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-80c1-95eb-ec60d8896f85" class="image"><a href="Immersive%20View%20Experience/stereo-1.webp"><img style="width:709.984375px" src="Immersive%20View%20Experience/stereo-1.webp"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-8021-b2c6-c09d6a6d0eb3" class="image"><a href="Immersive%20View%20Experience/stereo-5.webp"><img style="width:709.984375px" src="Immersive%20View%20Experience/stereo-5.webp"/></a></figure></div></div></div></div></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-8074-91c1-c34056078a11" class="">
+</p></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-80aa-988f-cbf71c773ab6" class="column-list"><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-80c4-916a-e234a7e73a5f" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-8066-99e4-d93590022080" class=""><strong>トップアンドボトム</strong></p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-8097-b77b-f9b9b4fb436c" class="">使用用途検証</p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-80f2-a6e4-f4cfca65a7a1" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-8093-b25b-c2fa3008a6e9" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-8000-9fc7-d01fc35976a4" class="image"><a href="Immersive%20View%20Experience/stereo-2.webp"><img style="width:709.984375px" src="Immersive%20View%20Experience/stereo-2.webp"/></a></figure></div></div></div></div></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80e7-b25c-f625dc387a63" class="">
+</p></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-8006-bbbc-c95aecc8ca1a" class="column-list"><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-80dc-9e0a-d22d1ca973fc" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-80b4-ab7e-e9f04211b0e6" class=""><strong>アナグリフ</strong></p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-80cb-85f3-d30403034065" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-8003-a838-dc52771bf3bc" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-80e7-8128-c5bed6eda261" class="image"><a href="Immersive%20View%20Experience/stereo-4.webp"><img style="width:709.984375px" src="Immersive%20View%20Experience/stereo-4.webp"/></a></figure></div></div></div></div></div><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-807b-be8c-f7a24f75620e" class="">
+</p></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-801d-bf1c-c9ed28604b52" class="column-list"><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-8030-a2db-ee8ddb444aa8" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1aecee0b-d34e-808c-8dec-dd81d32cf9c4" class=""><strong>MV-HEVC</strong></p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-80dd-92c8-df4f09d70b19" class="">iOSデバイスで撮影した「空間動画」のフォーマット<br/>コーディック H.265<br/>ステレオ設定 MV-HEVC</p></div><div style="display:contents" dir="auto"><p id="1afcee0b-d34e-8011-912d-f5d771acff9b" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="1afcee0b-d34e-80f4-8f3d-eed56989fc72" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-80de-9eb4-e04980346aca" class="image"><a href="Immersive%20View%20Experience/stereo-6.webp"><img style="width:709.984375px" src="Immersive%20View%20Experience/stereo-6.webp"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="1adcee0b-d34e-809c-8eb4-e7c91392ce5b" class="image"><a href="Immersive%20View%20Experience/stereo-set.webp"><img style="width:331.984375px" src="Immersive%20View%20Experience/stereo-set.webp"/></a></figure></div></div></div></div></div><div style="display:contents" dir="auto"><hr id="1b4cee0b-d34e-809b-8c47-f2013378ff00"/></div><div style="display:contents" dir="auto"><hr id="1b4cee0b-d34e-8013-8a7a-ce6b3cb210aa"/></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-8092-982c-d65e647d612e" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="1b4cee0b-d34e-8025-8b43-ff2c30a68c6d" class="">技術検証</h1></div><div style="display:contents" dir="auto"><hr id="1b4cee0b-d34e-8087-8092-f85c5ced06c6"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">ファクトチェック結果｜YouTube用</summary><div class="indented"><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8093-95c6-ee5770bc3efd" class=""><strong>検証1: 立体視撮影時のレンズ間隔「約6.5mm」は適切か？</strong></p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8048-9e09-dae21e26c98e" class="">立体視（ステレオ）映像を2台のカメラで撮影する際のレンズ間隔について検証します。一般的に、<strong>人間の両目の間隔に相当する約6.5cm（65mm）前後</strong>が標準的なステレオベース（カメラ間隔）とされています  。この値は「平均的な瞳孔間距離」に基づくもので、自然な立体視効果（オルソステレオ）を得る基準です 。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8062-9d49-ef315ff9d0e5" class="">質問文の「約6.5mm」という値は、上記の<strong>6.5cm</strong>と比べて桁違いに小さく、通常の立体映像撮影の推奨値としては不適切です。実際のガイドラインでも、被写体との距離やパララックス制御は<strong>65mm程度のレンズ間隔</strong>を前提に議論されています 。6.5mm程度の極端に狭い間隔は、ごく近距離の被写体や昆虫撮影など**特殊なマクロ3D撮影（ハイポステレオ）**でしか用いられず、一般的な用途では人間の目幅に近い間隔を確保します 。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-801c-bc34-de2a99cc0820" class=""><strong>Conclusion（結論）</strong>：記載された「レンズ距離約6.5mm」は<strong>誤り</strong>です。適切なレンズ間隔は約6.5cm（65mm）が目安となります  。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8096-a7df-c01083971cf2" class=""><strong>検証2: YouTube用180°VR動画のアスペクト比は2:1か？</strong></p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8039-ab8e-e2a9188d6954" class="">YouTube向けの180°VR映像（VR180）のフレームアスペクト比について確認します。<strong>結論から言えば、この記載は正しいです。VR映像のプラットフォームでは、360°動画はエクイレクタングラー投影で横:縦＝2:1</strong>のフレーム比率が標準ですが、180°動画の場合もステレオ映像を左右に並べて格納するため最終的に<strong>2:1の画面比率</strong>になります 。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80ee-ace4-f793dcd8aefb" class="">具体的には、左右の目それぞれに180°×180°の視野を持つ映像（片眼分は正方形に近い領域）を横に並べて1つの動画にするため、横長の2:1（例えば3840×1920や5760×2880ピクセルなど）の解像度になります 。実際、Meta社（Oculus）の技術ドキュメントでも**「3Dステレオ（左右）映像は2:1のアスペクト比」<strong>になると明記されています 。これは半球状の映像を2つ横配置するVR180形式の一般的仕様です。なお、片眼のみの2D（モノ）180°映像の場合は1920×1920のように</strong>1:1<strong>比率も利用されますが 、YouTubeで扱われる立体視VR180は左右2チャネルを含むため</strong>2:1**となります。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80ca-a1dd-ee2085ad87f4" class=""><strong>Conclusion（結論）</strong>：YouTube用の180°VR動画を作成する際の適切なアスペクト比は<strong>2:1で正しい</strong>と言えます。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80bb-a964-df3a39bd3357" class=""><strong>検証3: YouTube用180VR動画はサイドバイサイド形式で書き出すのが最適か？</strong></p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80f0-8c78-c3bcc4311224" class="">最後に、180°VR動画をYouTubeにアップロードする際の適切なステレオフォーマットについて検証します。<strong>Google/YouTubeのVR180仕様では、ステレオ映像の配置は上下ではなく左右並列（サイドバイサイド）が推奨</strong>されています。 にある公式VR180フォーマット仕様書の記述によると、「ビデオ配信サービスが16:9に最適化されているため、縦配置（Top-Bottom）よりも横並び（Left-Right）の方が望ましい」と明示されています 。これは、左右に並べた方が動画全体が横長になり、従来の動画プレーヤーやストリーミング処理と親和性が高いからです。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8013-98ee-e3014569dc8a" class="">また、YouTubeの公式ヘルプ「3D動画のアップロード」でも、<strong>左右サイドバイサイドのステレオレイアウト</strong>に対応していることが記載されています 。YouTubeではアップロードされた動画ファイルのメタデータ（st3dボックスやStereoModeフラグなど）でステレオ形式を判断し、現在は左右サイドバイサイド方式が標準となっています 。実際、GoogleのVR180 Creatorツールでも、VR180素材を処理する際には自動的にトップ＆ボトム形式を左右並列形式に変換している例があります 。以上の情報から、YouTube用180°VRコンテンツは<strong>サイドバイサイド形式で書き出すのが最適</strong>と言えます。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-8059-b497-d065ba9df7f5" class=""><strong>Conclusion（結論）</strong>：記載3の「サイドバイサイドのフォーマットが最適である」は<strong>正しい</strong>です。</p></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80dc-8545-fc43d0599787" class=""><strong>参考文献</strong>: VR映像制作ガイドライン（Meta/Oculus）【24】、Google VR180公式仕様【31】、YouTubeヘルプ【12】、専門家の解説記事【32】など。各出典に示された通り、上記結論を支持する技術的根拠が得られました。</p></div></div></details></div><div style="display:contents" dir="auto"><h2 id="1b4cee0b-d34e-80f2-9890-e51c72692856" class="">アスペクト比</h2></div><div style="display:contents" dir="ltr"><table id="1b4cee0b-d34e-800d-ae63-cd7fc7c0233d" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="1b4cee0b-d34e-80df-8f38-d073e21bae66"><td id="]:&gt;c" class=""><mark class="highlight-yellow_background"><strong>動画の種類</strong></mark></td><td id="flcT" class=""><mark class="highlight-yellow_background"><strong>推奨アスペクト比</strong></mark></td><td id="Vk\J" class=""><mark class="highlight-yellow_background"><strong>Quest 3推奨解像度</strong></mark></td></tr></div><div style="display:contents" dir="ltr"><tr id="1b4cee0b-d34e-80d5-ac81-f3cf14f2454a"><td id="]:&gt;c" class="">360度モノラル動画</td><td id="flcT" class="">2:1</td><td id="Vk\J" class="">5760×2880（推奨）</td></tr></div><div style="display:contents" dir="ltr"><tr id="1b4cee0b-d34e-8048-8ed1-e97955f61487"><td id="]:&gt;c" class="">360度ステレオ動画（サイドバイサイド）</td><td id="flcT" class="">2:1</td><td id="Vk\J" class="">5760×2880（左右2880×2880ずつ）</td></tr></div><div style="display:contents" dir="ltr"><tr id="1b4cee0b-d34e-8005-9e68-ce7605b70c2c"><td id="]:&gt;c" class="">180度ステレオ動画（サイドバイサイド）</td><td id="flcT" class="">1:1 　</td><td id="Vk\J" class="">2880×2880 〜 4096×4096</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><ul id="1b4cee0b-d34e-8026-a47f-c679646993fc" class="bulleted-list"><li style="list-style-type:disc">Quest 3を含むVR空間動画では、一般的に**「2:1」（横：縦）のアスペクト比が標準**です。</li></ul></div><div style="display:contents" dir="auto"><ul id="1b4cee0b-d34e-80ba-b8cc-ccf8cb99368e" class="bulleted-list"><li style="list-style-type:disc">Quest 3向けで最も広く使われ推奨されるのは、**サイドバイサイド形式・2:1の5760×2880（5.7K）**です。</li></ul></div><div style="display:contents" dir="auto"><ul id="1b4cee0b-d34e-8017-a350-f6e6b8ba3318" class="bulleted-list"><li style="list-style-type:disc">将来的にMV-HEVCが使えれば、さらに高い解像度を効率的に利用できる可能性があります。</li></ul></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80a2-81ee-cc7dee4ff93e" class="">
+</p></div><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-806c-8737-e118d90c5f19" class="column-list"><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-8015-b733-deaf35042b0a" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1bacee0b-d34e-803e-afa8-fa683b03abf9" class="image"><a href="Immersive%20View%20Experience/360.webp"><img style="width:709.96875px" src="Immersive%20View%20Experience/360.webp"/></a></figure></div></div></div><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-80b3-9a6d-c0a7378de85a" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-8051-a44d-cf2b5bcc93ba" class=""><strong>360 panorama｜2:1</strong></p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-801a-a3f0-f9dac92c833f" class="">Insta360Studio から360で出力</p></div></div></div></div></div><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-8067-b724-c032f658b583" class="column-list"><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-80ad-911d-f0ee8eebf061" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="1bacee0b-d34e-80d1-9b57-fc953d994136" class="image"><a href="Immersive%20View%20Experience/180vr.webp"><img style="width:2560px" src="Immersive%20View%20Experience/180vr.webp"/></a></figure></div></div></div><div style="display:contents" dir="auto"><div id="1bacee0b-d34e-80a2-840e-e0a3d0206528" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80d7-afae-d8bddd194401" class=""><strong>180 VR｜1:1</strong></p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80c6-91e1-d9f3c4fcf275" class="">ステレオコピック撮影</p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-8046-bbf5-d1a83fd24eae" class="">上下に黒帯、映像は4:3、16:9</p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80bf-a869-fdc236ce5f7a" class="">用検証</p></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-807c-9914-c2c659ce9cbc" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">レンズ処理<br/>歪み（魚眼）</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-803a-9aaf-c6f7eba93aec" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">マスク形状<br/>魚眼を引き延ばしたような両端にえぐり</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-80dd-91cd-f625b021bcd3" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">MEGA or ULTRA</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-80f9-afd2-d9a8c87fdf49" class="">
+</p></div></div></div></div></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-80b2-8471-f1bfdf67d9c4" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2bdcee0b-d34e-8084-95cb-cd62d77b1f48"/></div><div style="display:contents" dir="auto"><h1 id="1b4cee0b-d34e-8036-aeff-e29fc0414285" class="">Unity設定</h1></div><div style="display:contents" dir="auto"><h3 id="1b4cee0b-d34e-8029-bec1-c9356525643c" class="">モノコピック 360</h3></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-80b5-bb87-fd8198dc31a1" class="">Skybox (Panorama) の利用が一番きれいにみえる<div class="indented"><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-806e-b83b-f7d91b40cace" class="">スケールや位置調整ができない</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-8042-aabd-e92e060311e4" class="">Skybox (Cube map) を利用すればカメラでの位置調整ができる、スケールは×<div class="indented"><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-8041-9c63-e6618280af27" class="">変換はAEのエフェクト「VRコンバーター」でできる</p></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-80cd-a915-c8168679d28e" class="">解像度が？モアレが出てた</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-8033-b644-fa3ae08d8cc9" class="">Blender の UV Sphereや Pro-builderのSphere だと上下頂点が潰れる</p></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-800b-9f7a-ddad307c907c" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="1b4cee0b-d34e-80d2-be68-df1f1e6260d1" class="">ステレオコピック 180</h3></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-804c-aa96-ffb4af787c9b" class="">上下をカットした半球スクリーン<div class="indented"><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-800b-8b4b-ccc4ba026453" class="">単眼映像とスケールで比率を合わせる<br/>例えば4:3映像なら幅・奥行きを4、高さを3とする</p></div></div></p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-805b-8056-d659e3de4513" class="">シェーダーグラフで右目と左目の表示を分岐</p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80b8-a8bc-c1f65269f1a7" class=""><strong>推奨する設定例：</strong></p></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-80fd-ae16-ea09079bbfc9" class="bulleted-list"><li style="list-style-type:disc"><strong>半球の中心</strong>：カメラ位置 (0,0,0)</li></ul></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-80d7-9d95-ceeae1eb933d" class="bulleted-list"><li style="list-style-type:disc"><strong>半径</strong>：3.5メートル前後</li></ul></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-804f-96bb-e785c984015b" class="bulleted-list"><li style="list-style-type:disc"><strong>スケール</strong>：(X=7, Y=7, Z=7)</li></ul></div><div style="display:contents" dir="auto"><ul id="1bacee0b-d34e-80b2-a322-c30d94748cbe" class="bulleted-list"><li style="list-style-type:disc"><strong>視野角（FOV）</strong>：Meta Questのデフォルト視野角 (約90〜95度程度) を使用すると、YouTubeVRアプリの感覚に近くなります。</li></ul></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-8054-bd32-f600e0f41f6b" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="1bacee0b-d34e-80bc-bec0-ec7c7ffe0b4d"/></div><div style="display:contents" dir="auto"><h1 id="1b6cee0b-d34e-80d0-9c21-cbe63087ce92" class="">YouTube アップロード設定</h1></div><div style="display:contents" dir="auto"><p id="1b4cee0b-d34e-8018-9efd-c497c18b81f2" class="">⚠️ メタデータ記述必須</p></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-80db-8fe5-c830fa346c93" class="">⚠️ 反映されるまで時間がかかる</p></div><div style="display:contents" dir="auto"><h3 id="1b6cee0b-d34e-80b8-8391-c6f0ada76cd5" class="">360 panorama</h3></div><div style="display:contents" dir="auto"><p id="1b6cee0b-d34e-8054-9d3c-f134a219fcbb" class="">exiftool を使って360°動画用メタデータを挿入する</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1b6cee0b-d34e-809e-b04d-f6751addec2e" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">exiftool -ProjectionType=equirectangular 動画のファイル名.mp4</code></pre></div><div style="display:contents" dir="auto"><p id="1b6cee0b-d34e-809e-a877-ebf35773f6eb" class="">⬆︎ Insta360Studioからエクスポートデータには使用可<br/>⬇︎ <mark class="highlight-red_background">Davinci編集後データはコチラ</mark></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1b6cee0b-d34e-80dd-90de-e347d0cd9344" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">exiftool -XMP-GSpherical:Spherical=&quot;true&quot; \
+-XMP-GSpherical:Stitched=&quot;true&quot; \
+-XMP-GSpherical:ProjectionType=&quot;equirectangular&quot; \
+-XMP-GSpherical:StereoMode=&quot;mono&quot; \
+input.mp4</code></pre></div><div style="display:contents" dir="auto"><p id="1b6cee0b-d34e-802d-9e55-cca7ed2a1ad0" class="">上記では、球面フラグ（Spherical=true）、スティッチ済み（Stitched=true）、投影方式（正距円筒）、ステレオ方式（mono）を設定しています</p></div><div style="display:contents" dir="auto"><p id="288cee0b-d34e-80ae-8c52-e8e6f9fb157a" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="288cee0b-d34e-800b-b2ea-fbe3661fb0ae" class="link-to-page"><a href="https://www.notion.so/360-288cee0bd34e800bb2eafbe3661fb0ae?pvs=21"><img class="icon" src="Immersive%20View%20Experience/360%E5%8B%95%E7%94%BB%E3%82%92%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%81%A7%E8%A6%8B%E3%82%8B/DaVinci_Resolve_Studio.png"/>360動画をデバイスで見る</a></figure></div><div style="display:contents" dir="auto"><p id="1b6cee0b-d34e-8023-be18-f22e9839617a" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="1b6cee0b-d34e-80fa-a89c-c1fb56d3dccd" class="">180VR</h3></div><div style="display:contents" dir="auto"><div id="25bcee0b-d34e-80ea-a119-e11af0782da7" class="column-list"><div style="display:contents" dir="auto"><div id="25bcee0b-d34e-80e7-97ad-dac4a8b1dd0a" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="1b6cee0b-d34e-80bd-9270-fe4b4229e4de" class="">⭕️ VR180 Creator アプリ</p></div></div></div><div style="display:contents" dir="auto"><div id="25bcee0b-d34e-80de-b0aa-e42bec701c73" style="width:50%" class="column"><div style="display:contents" dir="ltr"><figure id="25bcee0b-d34e-80b8-8122-e8600ad5be72" class="image"><a href="Immersive%20View%20Experience/vr180.ico"><img style="width:84px" src="Immersive%20View%20Experience/vr180.ico"/></a></figure></div></div></div></div></div><div style="display:contents" dir="auto"><p id="1bacee0b-d34e-8078-b0c8-d81c14eac89f" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="1bacee0b-d34e-80a9-9be6-c419081ce51b"/></div><div style="display:contents" dir="auto"><h1 id="1c0cee0b-d34e-8086-9172-dc939403e8ab" class="">最適化</h1></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-809e-9ced-f2dc6fade1b0" class=""><mark class="highlight-yellow_background">Unity（Quest3）利用｜解像度はそのままファイルサイズは小さくしたい</mark></p></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-80b6-9b65-ccf9b7dfb2bf" class=""><code>ビットレートが高いほど、1秒あたりの動画データ量が多くなり、ファイルサイズが大きくなります。</code></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2bdcee0b-d34e-80fe-a459-c8cbb457988b" class="code code-wrap"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all"># 16ビットレートに変更する
+ffmpeg -i &quot;input.mp4&quot; -c:v libx265 -b:v 16M -pix_fmt yuv420p -y &quot;output.mp4&quot;</code></pre></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-806d-89e3-e47d8a84a497" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="1bacee0b-d34e-80e6-9b51-ea2b54fcedfb"/></div><div style="display:contents" dir="auto"><h1 id="1b5cee0b-d34e-807d-b1ea-ca0e7a5c2294" class="">演出</h1></div><div style="display:contents" dir="auto"><p id="1b5cee0b-d34e-80b0-83b2-d688194d737a" class="">Refer</p></div><div style="display:contents" dir="ltr"><figure id="1b5cee0b-d34e-80bf-b1fc-e003f3d3585f"><a href="https://youtu.be/ZyMxrw6cq2M?si=pBNUCUIUB7j9rY_X" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Learn VR Filmmaking on set - VR Docuseries #MeetTheDetermined | EP3 Tokyo Japan</div><div class="bookmark-description">This VR filmmaking behind the scene episode brings you to the glorious city of Tokyo, Japan. We will cover a couple of very important concepts in VR filmmaking - Exposure Plate and Establishing Shots, just to name a few. Remember to subscribe and stay tuned for a more detailed VR post-production tutorial for all the concepts discussed in the video.
+To check out the actual VR docuseries, head on over to Special Olympics World Games AD YouTube Channel, put on your favorite VR headset, and enjoy! Airing live from the UAE daily for the next week at 9am PST, 11am EST, 4pm GMT, and 8pm GST! Thank you for watching and we will see you in the next city.
+
+Videographer: Alex Tafreshi (IG: @20twentypro) - https://20twentypro.com/</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/f72bfc7f/img/logos/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/ZyMxrw6cq2M?si=pBNUCUIUB7j9rY_X</div></div><img src="https://i.ytimg.com/vi/ZyMxrw6cq2M/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="1c0cee0b-d34e-8029-8215-ea6d85d47aeb" class="">
+</p></div><div style="display:contents" dir="auto"><p id="1c0cee0b-d34e-8014-bc60-fdf516031f88" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="1c0cee0b-d34e-80cf-8bec-fef13a2d4f0f" class="">AIを使った立体視化技術: 2D映像からの3D動画生成</h1></div><div style="display:contents" dir="ltr"><figure id="1c0cee0b-d34e-80b5-ae02-ec7065050fd6"><a href="https://chatgpt.com/share/67e117a0-b970-8000-8a21-b06a3f372e0b" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">ChatGPT - モノラル動画 立体化方法</div><div class="bookmark-description">Shared via ChatGPT</div></div><div class="bookmark-href"><img src="https://cdn.oaistatic.com/assets/favicon-180x180-od45eci6.webp" class="icon bookmark-icon"/>https://chatgpt.com/share/67e117a0-b970-8000-8a21-b06a3f372e0b</div></div><img src="https://cdn.oaistatic.com/assets/chatgpt-share-og-u7j5uyao.webp" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><p id="2bdcee0b-d34e-80df-9521-c4e738db730d" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
